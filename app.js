@@ -20,7 +20,7 @@ db.on('error', console.error);
 db.once('open', function() {
   console.log("Connected to MongoDB Server");
 });
-mongoose.connect('mongodb://localhost/local-board');
+mongoose.connect('mongodb://localhost/plant-manager');
 
 
 app.use(logger('dev'));
