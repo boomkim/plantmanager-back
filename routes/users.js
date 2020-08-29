@@ -12,21 +12,25 @@ router.get('/', function(req, res, next) {
 /* Post users - register new user */
 router.post('/', function(req, res, next) {
   var { username, email, password } = req.body;
-  /*
-  console.log('hello');
-  console.log(req.body);
-  console.log(username);
-  console.log(email);
-  console.log(password);
-  console.log(body);
-  */
+  if (username === undefined || email === undefined || password === undefined) {
+    res.status(400).json({message: "값이 충분하지 않습니다."})
+  }
+  if (username === '' || email === '' || password === '') {
+    res.status(400).json({message: "값이 입력되지 않았습니다."})
+  }
+  // console.log('hello');
+  // console.log(req);
+  // console.log(username);
+  // console.log(email);
+  // console.log(password);
+  // console.log(body);
  
   User.find({email: email}, function (err, docs) {
     if (err) {
       return console.error(err);
     } else if (docs[0]) {
-      console.dir(docs);
-      res.status(409).json({message: "user already exist with this email"});
+      console.log(docs[0]);
+      res.status(400).json({message: "이미 해당 사용자가 있습니다."});
     } else {
       hasher({password: password}, function(err, pass, salt, hash){
         var user = new User({

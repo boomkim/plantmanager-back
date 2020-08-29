@@ -4,11 +4,11 @@ const hasher = bkfd2Password();
 var Schema = mongoose.Schema;
 
 var userSchema = new Schema({
-    username: String,
-    email: { type: String, unique: true },
+    username: { type:String, required: true},
+    email: { type: String, unique: true, required: true},
     salt: { type: String },
-    hash: { type: String },
-    registered: { type: Date, default: Date.now }
+    hash: { type: String, required: true },
+    registered: { type: Date, default: Date.now, required: true}
 });
 
 userSchema.statics.findOneByEmail = function(email) { 
