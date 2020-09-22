@@ -2,14 +2,17 @@ const jwt = require('jsonwebtoken');
 
 const authMiddleware = (req, res, next) => {
 
-	var token = req.headers['Authorization'];
-	token = token.split(' ')[-1];
+	var token = req.headers['authorization'];
+	// console.log(req.headers);
+	
 	if ( !token ) {
 		return res.status(403).json({
 			success : false,
 			message : 'Login first'
 		});
-	}
+	} 
+	// console.log(token);
+	token = token.split(' ')[1];
 
 	const promise = new Promise( (resolve, reject) => {
 		jwt.verify(

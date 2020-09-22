@@ -29,15 +29,14 @@ router.post('/login', function(req, res, next) {
       res.sendStatus(403); //email not found
     }
     this.username = doc.username;
+    this.userid = doc._id;
     return doc.verify(password);
   }).then( val => {
     if (val === false) {
       res.sendStatus(403); //password is not correct 
     } else {
-      const token = jwt.sign({username : this.username}, secret);
-      res.json({
-        token
-      });
+      const token = jwt.sign({username : this.username, userid : this.userid }, secret);
+      res.json({ token });
     }
   })
   .catch(err => {

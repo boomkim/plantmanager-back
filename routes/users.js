@@ -3,11 +3,13 @@ var router = express.Router();
 var User = require('../models/user');
 var bkfd2Password = require('pbkdf2-password');
 const hasher = bkfd2Password();
+const authMiddleware = require('../middleware/auth');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
+
 
 /* Post users - register new user */
 router.post('/', function(req, res, next) {
@@ -49,5 +51,21 @@ router.post('/', function(req, res, next) {
   })
   
 });
+
+router.use('/me', authMiddleware)
+router.get('/me', function(req, res, next) {
+  let userid = req.decoded.userid;
+  User.findById(userid)
+  .then(doc => {
+    // console.log(doc);
+    let {username, email} = doc;
+    res.json({username, email});
+  }).catch(err => {
+    console.log(err);
+    res.sendStatus(400);
+  })
+
+})
+
 
 module.exports = router;
