@@ -31,12 +31,24 @@ router.get('/plants', function(req, res, next) {
   })
 });
 
-router.post('/')
+router.post('/plants', function(req, res, next) {
+  let userid = req.decoded.userid;
+  let { plantname, photo_url, kind } = req.body;
+  let plant = { plantname, photo_url, kind };
+  User.updateOne(
+    { _id: userid },
+    { $push: { plants: plant}}
+  ).then(res.sendStatus(200))
+  .catch(err => {
+    console.log(err);
+    res.sendStatus(400);
+  });
+});
 
 
 /* Post users - register new user */
 router.post('/', function(req, res, next) {
-  var { username, email, password } = req.body;
+  let { username, email, password } = req.body;
   if (username === undefined || email === undefined || password === undefined) {
     res.status(400).json({message: "값이 충분하지 않습니다."})
   }
