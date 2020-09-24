@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
 var bkfd2Password = require('pbkdf2-password');
 const hasher = bkfd2Password();
+var plantSchema = require('./plantSchema');
+
 var Schema = mongoose.Schema;
 
 var userSchema = new Schema({
@@ -8,7 +10,8 @@ var userSchema = new Schema({
     email: { type: String, unique: true, required: true},
     salt: { type: String },
     hash: { type: String, required: true },
-    registered: { type: Date, default: Date.now, required: true}
+    registered: { type: Date, default: Date.now, required: true},
+    plants: [plantSchema]
 });
 
 userSchema.statics.findOneByEmail = function(email) { 

@@ -20,13 +20,6 @@ router.post('/', function(req, res, next) {
   if (username === '' || email === '' || password === '') {
     res.status(400).json({message: "값이 입력되지 않았습니다."})
   }
-  // console.log('hello');
-  // console.log(req);
-  // console.log(username);
-  // console.log(email);
-  // console.log(password);
-  // console.log(body);
- 
   User.find({email: email}, function (err, docs) {
     if (err) {
       return console.error(err);
@@ -57,14 +50,25 @@ router.get('/me', function(req, res, next) {
   let userid = req.decoded.userid;
   User.findById(userid)
   .then(doc => {
-    // console.log(doc);
     let {username, email} = doc;
     res.json({username, email});
   }).catch(err => {
     console.log(err);
     res.sendStatus(400);
   })
+});
 
+router.use('/plants', authMiddleware);
+router.get('/plants', function(req, res, next) {
+  let userid = req.decoded.userid;
+  User.findById(userid)
+  .then(doc => {
+    let { plants } = doc;
+    res.json({ plants })
+  }).catch(err => {
+    console.log(err);
+    res.sendStatus(400);
+  })
 })
 
 
