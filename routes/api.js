@@ -15,8 +15,9 @@ router.get('/', function(req, res, next) {
 router.use('/signedurl', authMiddleware);
 router.get('/signedurl', function(req, res, next) {
   const userid = req.decoded.userid;
+  const file_extenstion = req.params.filename.split('.').pop();
   console.log(userid);
-  const key = 'userplants/' + userid + '/' + uuidv4();
+  const key = 'userplants/' + userid + '/' + uuidv4() + "." + file_extenstion;
   const params = {
     Bucket: 'plant-manager',
     Key: key
