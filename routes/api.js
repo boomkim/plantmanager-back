@@ -2,7 +2,9 @@ const express = require('express');
 const router = express.Router();
 const AWS = require('aws-sdk');
 const authMiddleware = require('../middleware/auth');
-const s3 = new AWS.S3({signatureVersion: 'v4', region: 'ap-northeast-2'});
+const s3 = new AWS.S3({
+  signatureVersion: 'v4', 
+  region: 'ap-northeast-2'});
 const { v4: uuidv4 } = require('uuid');
 
 /* GET home page. */
