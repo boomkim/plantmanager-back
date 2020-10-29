@@ -33,6 +33,7 @@ router.get('/plants', function(req, res, next) {
 
 router.post('/plants', function(req, res, next) {
   let userid = req.decoded.userid;
+  console.log(req.body);
   let { plantname, photo_url, kind } = req.body;
   let plant = { plantname, photo_url, kind };
   User.updateOne(

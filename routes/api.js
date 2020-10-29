@@ -15,16 +15,24 @@ router.get('/', function(req, res, next) {
 router.use('/signedurl', authMiddleware);
 router.get('/signedurl', function(req, res, next) {
   const userid = req.decoded.userid;
-  const file_extenstion = req.params.filename.split('.').pop();
   console.log(userid);
+  console.log(req.params.filename);
+  const file_extenstion = req.query.filename.split('.').pop();
+  const file_type = req.query.filetype;
+  console.log("1");
+  console.log(file_extenstion);
+  console.log(file_type);
   const key = 'userplants/' + userid + '/' + uuidv4() + "." + file_extenstion;
   const params = {
     Bucket: 'plant-manager',
-    Key: key
+    Key: key,
+    ContentType: file_type,
+    ACL: 'public-read'
   }
+  console.log(params);
   const signedUrl = s3.getSignedUrl('putObject',params);
   console.log(signedUrl);
-  res.send({signedUrl});
+  res.send({signedUrl,key});
 });
 
 /* health check */
