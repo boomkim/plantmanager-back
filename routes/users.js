@@ -18,6 +18,23 @@ router.get('/me', function(req, res, next) {
   })
 });
 
+
+router.use('/plants/:_id', authMiddleware);
+router.get('/plants/:_id', function(req, res, next) {
+  let userid = req.decoded.userid;
+  let plant_id = req.params._id;
+  User.findById(userid)
+  .then(doc => {
+    let plant = doc.plants.id(plant_id);
+    // console.log(plant);
+    res.json({ plant })
+  }).catch(err => {
+    console.log(err);
+    res.sendStatus(400);
+  })
+});
+
+
 router.use('/plants', authMiddleware);
 router.get('/plants', function(req, res, next) {
   let userid = req.decoded.userid;
