@@ -34,6 +34,18 @@ router.get('/plants/:_id', function(req, res, next) {
   })
 });
 
+router.delete('/plants/:_id',function(req, res, next) {
+  let userid = req.decoded.userid;
+  let plant_id = req.params._id;
+  console.log("hello");
+  User.updateOne(
+    { _id: userid},
+    {
+      $pull: { plants: {_id: plant_id}}
+    }
+  ).then(res.sendStatus(200));
+})
+
 
 router.use('/plants', authMiddleware);
 router.get('/plants', function(req, res, next) {
@@ -62,6 +74,8 @@ router.post('/plants', function(req, res, next) {
     res.sendStatus(400);
   });
 });
+
+
 
 
 /* Post users - register new user */
