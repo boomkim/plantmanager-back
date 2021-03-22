@@ -19,6 +19,21 @@ router.get('/me', function(req, res, next) {
 });
 
 
+// 물주기
+router.use('/plants/:_id', authMiddleware);
+router.post('/plants/:_id/water', function(req, res, next) {
+  let plant_id = req.params._id;
+  let water_date = req.body.waterDate;
+  User.updateOne({'plants._id': plant_id},
+    {
+      $push: { 'plants.$.water' : water_date}
+    }
+  ).then((data) => {
+    console.log(data)
+    res.sendStatus(200)
+  })
+})
+
 router.use('/plants/:_id', authMiddleware);
 router.get('/plants/:_id', function(req, res, next) {
   let userid = req.decoded.userid;
@@ -33,6 +48,7 @@ router.get('/plants/:_id', function(req, res, next) {
     res.sendStatus(400);
   })
 });
+
 
 router.delete('/plants/:_id',function(req, res, next) {
   let userid = req.decoded.userid;
@@ -74,6 +90,8 @@ router.post('/plants', function(req, res, next) {
     res.sendStatus(400);
   });
 });
+
+
 
 
 
