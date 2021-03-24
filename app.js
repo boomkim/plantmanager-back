@@ -1,7 +1,7 @@
-const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
+const createError = require('http-errors');
 const logger = require('morgan');
 const mongoose = require('mongoose');
 
@@ -26,8 +26,8 @@ db.on('error', console.error);
 db.once('open', function() {
   console.log("Connected to MongoDB Server");
 });
-mongoose.connect('mongodb://localhost/plant-manager');
-
+const dbstring = 'mongodb://'+config.dbhost+'/plant-manager';
+mongoose.connect(dbstring);
 
 app.use(logger('dev'));
 app.use(express.json());
